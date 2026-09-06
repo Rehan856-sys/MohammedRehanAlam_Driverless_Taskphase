@@ -1,119 +1,37 @@
-import csv
-import math
+def distance_squared(point, reference):
+
+    x, y = point
+    xr, yr = reference
+
+    return (x - xr) ** 2 + (y - yr) ** 2
 
 
-def distance_from_origin(cone):
+def sort_by_distance(points, reference):
 
-    x = float(cone["x"])
-    y = float(cone["y"])
+    n = len(points)
 
-    return x * x + y * y
+    for i in range(n):
 
+        min_index = i
 
-def distance_between(cone1, cone2):
+        for j in range(i + 1, n):
 
-    x1 = float(cone1["x"])
-    y1 = float(cone1["y"])
+            if distance_squared(points[j], reference) < \
+               distance_squared(points[min_index], reference):
 
-    x2 = float(cone2["x"])
-    y2 = float(cone2["y"])
+                min_index = j
 
-    return (x1 - x2) ** 2 + (y1 - y2) ** 2
+        points[i], points[min_index] = \
+            points[min_index], points[i]
 
-
-# Read cones.csv
-
-cones = []
-
-with open("cones.csv", "r") as file:
-
-    reader = csv.DictReader(file)
-
-    for row in reader:
-        cones.append(row)
+    return points
 
 
-# Sort by distance from origin
+points = [(0, 1), (0, 3), (1, 2)]
 
-cones.sort(key=distance_from_origin)
+xr = int(input("Enter reference x: "))
+yr = int(input("Enter reference y: "))
 
+reference = (xr, yr)
 
-# Separate colours
-
-blue = []
-yellow = []
-
-for cone in cones:
-
-    if cone["colour"].lower() == "blue":
-        blue.append(cone)
-
-    elif cone["colour"].lower() == "yellow":
-        yellow.append(cone)
-
-
-# Write blue.csv
-
-with open("blue.csv", "w", newline="") as file:
-
-    writer = csv.DictWriter(
-        file,
-        fieldnames=["id", "x", "y", "colour"]
-    )
-
-    writer.writeheader()
-    writer.writerows(blue)
-
-
-# Write yellow.csv
-
-with open("yellow.csv", "w", newline="") as file:
-
-    writer = csv.DictWriter(
-        file,
-        fieldnames=["id", "x", "y", "colour"]
-    )
-
-    writer.writeheader()
-    writer.writerows(yellow)
-
-
-# Find midpoint for every blue cone
-# and its nearest yellow cone
-
-midpoints = []
-
-for b in blue:
-
-    nearest_yellow = min(
-        yellow,
-        key=lambda y: distance_between(b, y)
-    )
-
-    x1 = float(b["x"])
-    y1 = float(b["y"])
-
-    x2 = float(nearest_yellow["x"])
-    y2 = float(nearest_yellow["y"])
-
-    midpoint_x = (x1 + x2) / 2
-    midpoint_y = (y1 + y2) / 2
-
-    midpoints.append(
-        (midpoint_x, midpoint_y)
-    )
-
-
-# Write centreline.csv
-
-with open("centreline.csv", "w", newline="") as file:
-
-    writer = csv.writer(file)
-
-    writer.writerow(["x", "y"])
-
-    for point in midpoints:
-        writer.writerow(point)
-
-
-print("Files created successfully.")
+print(sort_by_distance(points, reference))
