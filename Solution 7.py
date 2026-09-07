@@ -27,11 +27,25 @@ def sort_by_distance(points, reference):
     return points
 
 
-points = [(0, 1), (0, 3), (1, 2)]
+# Input number of points
+n = int(input("Enter number of points: "))
 
+points = []
+
+# Input each point
+for i in range(n):
+    x = int(input(f"Enter x-coordinate of point {i + 1}: "))
+    y = int(input(f"Enter y-coordinate of point {i + 1}: "))
+
+    points.append((x, y))
+
+
+# Input reference point
 xr = int(input("Enter reference x: "))
 yr = int(input("Enter reference y: "))
 
 reference = (xr, yr)
 
+# Sort and print
+print("Points sorted by distance:")
 print(sort_by_distance(points, reference))
