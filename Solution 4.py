@@ -28,18 +28,39 @@ def matrix_multiply(A, B):
     return result
 
 
-A = [
-    [1, 2, 3],
-    [4, 5, 6]
-]
 
-B = [
-    [7, 8],
-    [9, 10],
-    [11, 12]
-]
+rows_A = int(input("Enter number of rows of A: "))
+cols_A = int(input("Enter number of columns of A: "))
+
+A = []
+
+print("Enter elements of A:")
+for i in range(rows_A):
+    row = []
+    for j in range(cols_A):
+        value = int(input(f"A[{i}][{j}]: "))
+        row.append(value)
+    A.append(row)
+
+
+
+rows_B = int(input("Enter number of rows of B: "))
+cols_B = int(input("Enter number of columns of B: "))
+
+B = []
+
+print("Enter elements of B:")
+for i in range(rows_B):
+    row = []
+    for j in range(cols_B):
+        value = int(input(f"B[{i}][{j}]: "))
+        row.append(value)
+    B.append(row)
+
 
 C = matrix_multiply(A, B)
 
 if C is not None:
-    print(C)
+    print("Result:")
+    for row in C:
+        print(row)
